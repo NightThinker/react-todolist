@@ -35,7 +35,7 @@ const toolbar = (props) => {
   console.log('props: ', props);
   return (
     <div >
-      <AppBar Clicked={props.drawerToggleClicked} showDialog={props.showDialog} openDialog={props.openDialog} closeDialog={props.closeDialog}/>
+      <AppBar Clicked={props.drawerToggleClicked}/>
       <SideDrawer mobileOpen={props.mobileOpen} onClose={props.onClose}/>
     </div>
   )

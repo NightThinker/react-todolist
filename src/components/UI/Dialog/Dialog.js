@@ -25,7 +25,6 @@ const formDialog = (props) => {
   return (
   
   <div>
-  {/* <Button onClick={this.handleClickOpen}>Open form dialog</Button> */}
   <Dialog
     open={props.openDialog}
     onClose={props.closeDialog}

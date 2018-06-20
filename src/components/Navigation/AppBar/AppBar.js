@@ -7,8 +7,9 @@ import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 import Typography from '@material-ui/core/Typography';
 
-import Tooltips from '../../Tooltips/Tooltips';
+import Tooltips from '../../UI/Tooltips/Tooltips';
 import Dialog from '../../UI/Dialog/Dialog';
+import TodoData from '../../../containers/TodoData';
 
 const drawerWidth = 240;
 
@@ -46,8 +47,10 @@ const appBar = (props) => {
         <Typography variant="title" color="inherit" noWrap>
           Responsive drawer
         </Typography>
-        <Tooltips showDialog={props.showDialog}/>
-        <Dialog openDialog={props.openDialog} closeDialog={props.closeDialog}/>
+        <TodoData/>
+        {/* <Tooltips showDialog={props.showDialog}/>
+        <Dialog openDialog={props.openDialog} closeDialog={props.closeDialog}/> */}
+
       </Toolbar>
     </AppBar>
   )

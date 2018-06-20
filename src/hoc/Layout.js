@@ -53,9 +53,6 @@ class Layout extends Component {
             drawerToggleClicked={this.handleDrawerToggle} 
             mobileOpen={this.state.mobileOpen} 
             onClose={this.handleDrawerToggle}
-            showDialog={this.handleClickOpen}
-            openDialog={this.state.openDialog}
-            closeDialog={this.handleClose}
           />
           <main className={classes.content}>
             <div className={classes.toolbar} />
