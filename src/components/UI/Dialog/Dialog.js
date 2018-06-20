@@ -27,7 +27,7 @@ const formDialog = (props) => {
     aria-labelledby="form-dialog-title"
   >
     <DialogTitle id="form-dialog-title">ToDoList</DialogTitle>
-    <DialogContent>
+    {/* <DialogContent> */}
       {/* <TextField
       autoFocus
         id="name"
@@ -56,15 +56,7 @@ const formDialog = (props) => {
         className={classes.textField}
       /> */}
       {props.children}
-    </DialogContent>
-    <DialogActions>
-      <Button onClick={props.closeDialog} color="primary">
-        Add
-      </Button>
-      <Button onClick={props.closeDialog} color="primary">
-        Cancel
-      </Button>
-    </DialogActions>
+
   </Dialog>
   </div>
 )

@@ -1,11 +1,20 @@
 import React, { Component } from 'react';
-
+import { connect } from 'react-redux';
 
 import Tooltips from '../components/UI/Tooltips/Tooltips';
 import Dialog from '../components/UI/Dialog/Dialog';
 import Input from '../components/UI/Input/Input';
 
 import {updateObject} from '../shared/utility';
+import * as  actions from '../store/actions/todoList';
+import withErrorHandler from '../hoc/withErrorHandler';
+import axios from '../axios-todo';
+
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import Button from '@material-ui/core/Button';
+import TextField from '@material-ui/core/TextField';
 
 class TodoData extends Component {
   state = {
@@ -99,10 +108,11 @@ class TodoData extends Component {
     for(let inputIdentifier in updatedtodoForm) {
       formIsValid = updatedtodoForm[inputIdentifier].valid && formIsValid;
     }
-    this.setState({todoForm: updatedtodoForm, formIsValid: formIsValid});
+    this.setState({todoForm: updatedtodoForm});
   } 
 
   render() {
+    console.log(this.props.data);
     const formElementArray = [];
     for(let key in this.state.todoForm) {
       formElementArray.push({
@@ -112,7 +122,7 @@ class TodoData extends Component {
     } 
     console.log(formElementArray);
     let form= (
-      <form onSubmit={this.orderHandler}>
+      <div>
         {formElementArray.map(formElement => (  
           <Input 
             key={formElement.id}
@@ -123,17 +133,43 @@ class TodoData extends Component {
           />       
 
         ))}
-      </form>
+         <button btnType="Success" >ORDER</button>
+      </div>
     );
     return (
       <div>
         <Tooltips showDialog={this.handleClickOpen}/>
         <Dialog openDialog={this.state.openDialog} closeDialog={this.handleClose}>
-          {form}
+          <form onSubmit={this.orderHandler}>
+            <DialogContent>
+              {form}
+            </DialogContent>
+            <DialogActions>
+              <Button type="submit" onClick={this.handleClose} color="primary">
+                Add
+              </Button>
+              <Button onClick={this.handleClose} color="primary">
+                Cancel
+              </Button>
+            </DialogActions>
+          </form>
         </Dialog>
       </div>
     );
   }
 }
 
-export default TodoData;
+const mapStateToProps = state => {
+  // console.log('state: ', state);
+  return {
+    data: state.list
+  }
+}
+
+const mapDisptchToProps = dispatch => {
+  return {
+    onTodoData: (todoData) => dispatch(actions.add(todoData))
+  }
+}
+
+export default connect(mapStateToProps,mapDisptchToProps)(withErrorHandler(TodoData, axios));
