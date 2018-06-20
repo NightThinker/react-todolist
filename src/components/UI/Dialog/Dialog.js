@@ -9,10 +9,6 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import { withStyles } from '@material-ui/core/styles';
 
 const styles = theme => ({
-  container: {
-    display: 'flex',
-    flexWrap: 'wrap',
-  },
   textField: {
     marginLeft: theme.spacing.unit,
     marginRight: theme.spacing.unit,
@@ -32,7 +28,7 @@ const formDialog = (props) => {
   >
     <DialogTitle id="form-dialog-title">ToDoList</DialogTitle>
     <DialogContent>
-      <TextField
+      {/* <TextField
       autoFocus
         id="name"
         label="Title"
@@ -46,13 +42,10 @@ const formDialog = (props) => {
         fullWidth
       />
       <TextField
-        id="datetime-local"
+        id="date"
         label="Due Date"
-        type="datetime-local"
-        defaultValue="2017-05-24T10:30"
-        InputLabelProps={{
-          shrink: true,
-        }}
+        type="date"
+        defaultValue="2017-05-24"
       />
 
       <TextField
@@ -61,13 +54,8 @@ const formDialog = (props) => {
         type="time"
         defaultValue="07:30"
         className={classes.textField}
-        InputLabelProps={{
-          shrink: true,
-        }}
-        inputProps={{
-          step: 300, // 5 min
-        }}
-      />
+      /> */}
+      {props.children}
     </DialogContent>
     <DialogActions>
       <Button onClick={props.closeDialog} color="primary">

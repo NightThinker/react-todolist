@@ -1,11 +1,68 @@
 import React, { Component } from 'react';
 
+
 import Tooltips from '../components/UI/Tooltips/Tooltips';
 import Dialog from '../components/UI/Dialog/Dialog';
+import Input from '../components/UI/Input/Input';
+
+import {updateObject} from '../shared/utility';
 
 class TodoData extends Component {
   state = {
     openDialog: false,
+    todoForm: {
+      title: {
+        elementType: 'input',
+        elementConfig: {
+          id: 'name',
+          autoFocus: true,
+          label: 'Title',
+          margin: 'normal',
+          fullWidth: true
+        },
+        value: '',
+      },
+      Description: {
+        elementType: 'input',
+        elementConfig: {
+          id: 'name',
+          autoFocus: false,
+          label: 'Description',
+          margin: 'normal',
+          fullWidth: true
+        },
+        value: '',
+      },
+      DueDate: {
+        elementType: 'date',
+        elementConfig: {
+          id:"date",
+          label:"Due Date",
+          type:"date",
+          InputLabelProps:{
+            shrink: true,
+          }
+        },
+        defaultValue:"2017-05-24",
+        value: '',
+      },
+      time: {
+        elementType: 'time',
+        elementConfig: {
+          id: 'time',
+          label: 'Alarm clock',
+          type: 'time',
+          InputLabelProps: {
+            shrink: true,
+          },
+          inputProps:{
+            step: 300, // 5 min
+          }
+        },
+        defaultValue: '07:30',
+        value: '',
+      }
+    }
   };
 
   handleClickOpen = () => {
@@ -15,11 +72,65 @@ class TodoData extends Component {
   handleClose = () => {
     this.setState({ openDialog: false });
   };
+
+  orderHandler = (event) => {
+    event.preventDefault();
+    const formData = {};
+    for(let formElementIdentifier in this.state.todoForm) {
+      formData[formElementIdentifier] = this.state.todoForm[formElementIdentifier].value;
+    }
+    const todo = {
+      todoData: formData,
+    }
+    this.props.onTodoData(todo);
+  }
+
+  inputChangeHandler = (event, inputIdentifier) => {
+
+    const updatedFormElement = updateObject(this.state.todoForm[inputIdentifier], {
+      value: event.target.value,
+    });
+
+    const updatedtodoForm = updateObject(this.state.todoForm, {
+      [inputIdentifier]: updatedFormElement
+    })
+
+    let formIsValid = true;
+    for(let inputIdentifier in updatedtodoForm) {
+      formIsValid = updatedtodoForm[inputIdentifier].valid && formIsValid;
+    }
+    this.setState({todoForm: updatedtodoForm, formIsValid: formIsValid});
+  } 
+
   render() {
+    const formElementArray = [];
+    for(let key in this.state.todoForm) {
+      formElementArray.push({
+        id: key,
+        config: this.state.todoForm[key]
+      })
+    } 
+    console.log(formElementArray);
+    let form= (
+      <form onSubmit={this.orderHandler}>
+        {formElementArray.map(formElement => (  
+          <Input 
+            key={formElement.id}
+            elementType={formElement.config.elementType}
+            elementConfig={formElement.config.elementConfig}
+            value={formElement.config.value}
+            changed={(event) => this.inputChangeHandler(event, formElement.id)}
+          />       
+
+        ))}
+      </form>
+    );
     return (
       <div>
         <Tooltips showDialog={this.handleClickOpen}/>
-        <Dialog openDialog={this.state.openDialog} closeDialog={this.handleClose}/>
+        <Dialog openDialog={this.state.openDialog} closeDialog={this.handleClose}>
+          {form}
+        </Dialog>
       </div>
     );
   }
