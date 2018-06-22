@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { withRouter } from "react-router-dom";
+
 
 import Tooltips from '../components/UI/Tooltips/Tooltips';
 import Dialog from '../components/UI/Dialog/Dialog';
@@ -12,9 +14,8 @@ import axios from '../axios-todo';
 
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
 import Button from '@material-ui/core/Button';
-import TextField from '@material-ui/core/TextField';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 class TodoData extends Component {
   state = {
@@ -76,11 +77,18 @@ class TodoData extends Component {
 
   handleClickOpen = () => {
     this.setState({ openDialog: true });
+
   };
 
   handleClose = () => {
     this.setState({ openDialog: false });
   };
+
+  addHandle = () => {
+    this.setState({ openDialog: false });
+    // this.props.onSetRedirectPath('/');
+    this.props.history.push('/');
+  }
 
   orderHandler = (event) => {
     event.preventDefault();
@@ -136,6 +144,10 @@ class TodoData extends Component {
          <button btnType="Success" >ORDER</button>
       </div>
     );
+    if(this.props.loading) {
+      form = <CircularProgress  />
+    }
+
     return (
       <div>
         <Tooltips showDialog={this.handleClickOpen}/>
@@ -145,7 +157,7 @@ class TodoData extends Component {
               {form}
             </DialogContent>
             <DialogActions>
-              <Button type="submit" onClick={this.handleClose} color="primary">
+              <Button type="submit" onClick={this.addHandle}  color="primary">
                 Add
               </Button>
               <Button onClick={this.handleClose} color="primary">
@@ -162,7 +174,8 @@ class TodoData extends Component {
 const mapStateToProps = state => {
   // console.log('state: ', state);
   return {
-    data: state.list
+    data: state.list,
+    loading : state.loading
   }
 }
 
@@ -172,4 +185,4 @@ const mapDisptchToProps = dispatch => {
   }
 }
 
-export default connect(mapStateToProps,mapDisptchToProps)(withErrorHandler(TodoData, axios));
+export default connect(mapStateToProps,mapDisptchToProps)(withErrorHandler(withRouter(TodoData), axios));

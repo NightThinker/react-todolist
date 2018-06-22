@@ -15,6 +15,10 @@ const styles = theme => ({
     width: '100%',
     backgroundColor: theme.palette.background.paper,
   },
+  list: {
+    height: '100%',
+    overflow: 'scroll !important'
+  }
 });
 
 class CheckboxList extends React.Component {
@@ -38,37 +42,55 @@ class CheckboxList extends React.Component {
     });
   };
 
+
   render() {
     const { classes } = this.props;
 
+    const todoData = [];
+    for(let todoTitle in this.props.todoData) {
+      todoData.push(
+        {
+          title: todoTitle,
+          data: this.props.todoData[todoTitle]
+        }
+      );
+    }
+
+    console.log("todoData : ", todoData);
+
     return (
-      <div className={classes.root}>
-        <List>
-          {[0, 1, 2, 3].map(value => (
-            <ListItem
-              key={value}
-              role={undefined}
-              dense
-              button
-              onClick={this.handleToggle(value)}
-              className={classes.listItem}
-            >
-              <Checkbox
-                checked={this.state.checked.indexOf(value) !== -1}
-                tabIndex={-1}
-                disableRipple
-              />
-              <ListItemText primary={`Line item ${value + 1}`} />
-              <ListItemSecondaryAction>
-                <IconButton aria-label="Comments">
-                  <CreateIcon />
-                </IconButton>
-                <IconButton aria-label="Comments">
-                  <DeleteIcon />
-                </IconButton>
-              </ListItemSecondaryAction>
-            </ListItem>
-          ))}
+      <div style={{maxHeight: 2000, overflow: 'auto'}}>
+        <List style={{maxHeight: '100%', overflow: 'scroll'}}>
+          {todoData.map(value => {
+            if (value.title === 'title') {
+              return (
+                <ListItem
+                  key={value.title}
+                  role={undefined}
+                  dense
+                  button
+                  onClick={this.handleToggle(value)}
+                  className={classes.listItem}
+                >
+                  <Checkbox
+                    checked={this.state.checked.indexOf(value) !== -1}
+                    tabIndex={-1}
+                    disableRipple
+                  />
+                  <ListItemText primary={value.data} />
+                  <ListItemSecondaryAction>
+                    <IconButton aria-label="edit">
+                      <CreateIcon />
+                    </IconButton>
+                    <IconButton aria-label="delete">
+                      <DeleteIcon />
+                    </IconButton>
+                  </ListItemSecondaryAction>
+                </ListItem>
+              )
+            }
+            }
+          )}
         </List>
       </div>
     );

@@ -36,3 +36,46 @@ export const add = (todoData) => {
     })
   }
 }
+
+
+export const fatchTodosSuccess = (todoData) => {
+  return {
+    type: actionTypes.FETCH_TODOS_SUCCESS,
+    todoData: todoData
+  };
+};
+
+export const fatchTodosFail = (error) => {
+  return {
+    type: actionTypes.FETCH_TODOS_FAIL,
+    error: error
+  };
+};
+
+export const fatchTodosStart = () => {
+  return {
+    type: actionTypes.FETCH_TODOS_START
+  };
+}
+
+export const fatchTodos = () => {
+  return dispatch => {
+    dispatch(fatchTodosStart());
+    axios.get('/todoData.json')
+    .then( res => {
+      console.log('res: ', res.data);
+      const fetchedTodos= [];
+      for(let key in res.data) {
+        fetchedTodos.push({
+          ...res.data[key],
+          id: key
+        });
+      }
+      dispatch(fatchTodosSuccess(fetchedTodos));
+    })
+    .catch( err => {
+      console.log('err: ', err);
+      dispatch(fatchTodosFail(err));
+    })
+  }
+}
